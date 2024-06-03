@@ -2,10 +2,10 @@ import { MessagePattern, Payload, EventPattern } from '@nestjs/microservices';
 import { DroneService } from './drone.service';
 import { CreateDroneDto } from './dto/create-drone.dto';
 import { UpdateDroneDto } from './dto/update-drone.dto';
-import { Controller, Get, Param, Post, Body } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Sse } from '@nestjs/common';
+import { Observable } from 'rxjs';
 
-
-@Controller()
+@Controller('drone')
 export class DroneController {
   constructor(private readonly droneService: DroneService) {}
 
@@ -30,4 +30,14 @@ export class DroneController {
     return { topic, message };
   }
 
+
+  @Get('subscribe/:topic')
+  subscribe(@Param('topic') topic: string): Observable<any> {
+    return this.droneService.subscribe(topic);
+  }
+
+  @Sse('events/:topic')
+  events(@Param('topic') topic: string): Observable<any> {
+    return this.droneService.subscribe(topic);
+  }
 }
