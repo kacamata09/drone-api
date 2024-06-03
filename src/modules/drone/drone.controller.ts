@@ -19,7 +19,7 @@ export class DroneController {
 
   @Post('subscribe/:topic')
   async subscribeToTopic(@Param('topic') topic: string): Promise<string> {
-    this.droneService.subscribe(topic); // Only one argument
+    this.droneService.subscribe(topic);
     return `Subscribed to topic ${topic}`;
   }
 
