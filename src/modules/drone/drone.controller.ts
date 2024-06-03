@@ -24,4 +24,10 @@ export class DroneController {
     console.log('Received message on topic "another/topic":', data);
   }
 
+  @Get('latest/:topic')
+  getLatestMessage(@Param('topic') topic: string): { topic: string, message: string | null } {
+    const message = this.droneService.getLatestMessage(topic);
+    return { topic, message };
+  }
+
 }

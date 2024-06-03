@@ -4,7 +4,7 @@ import { AppService } from './app.service';
 import { UserModule } from './modules/user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
-import { DroneModule } from './src/modules/drone/drone.module';
+import { DroneModule } from './modules/drone/drone.module';
 import 'dotenv/config';
 import * as path from 'path'
 
