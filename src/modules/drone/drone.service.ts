@@ -1,5 +1,4 @@
-import { CreateDroneDto } from './dto/create-drone.dto';
-import { UpdateDroneDto } from './dto/update-drone.dto';
+import { MessageDroneDto } from './dto/message-drone-dto.dto';
 import { Injectable, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { connect, MqttClient } from 'mqtt';
