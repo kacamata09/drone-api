@@ -20,7 +20,6 @@ export class DroneController {
   @ApiOperation({ description: 'to publish topic and message', summary: 'publish message to topic' })
   async publishToTopic(@Param('topic') topic: string, @Body() body: MessageDroneDto): Promise<string> {
     const message = JSON.stringify(body);
-    console.log(message)
     this.droneService.publish(topic, message);
     return `Published message ${message} to topic ${topic}`;
   }
