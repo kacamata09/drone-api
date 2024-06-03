@@ -3,7 +3,6 @@ import { DroneService } from './drone.service';
 import { CreateDroneDto } from './dto/create-drone.dto';
 import { UpdateDroneDto } from './dto/update-drone.dto';
 import { Controller, Get, Param, Post, Body, Sse } from '@nestjs/common';
-import { Observable } from 'rxjs';
 
 @Controller('drone')
 export class DroneController {

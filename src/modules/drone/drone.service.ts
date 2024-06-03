@@ -11,15 +11,6 @@ interface MqttMessage {
   message: string;
 }
 
-const streamBuilder = (client: MqttClient) => {
-  return client.stream;
-};
-
-const options = {
-  host: 'mqtt://localhost',
-  port: 1883,
-};
-
 @Injectable()
 export class DroneService {
 
