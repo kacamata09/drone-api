@@ -10,34 +10,27 @@ export class DroneController {
   constructor(private readonly droneService: DroneService) {}
 
   @Post('publish/:topic')
-  publish(@Param('topic') topic: string, @Body() message: any) {
-    return this.droneService.publish(topic, message);
+  async publishToTopic(@Param('topic') topic: string, @Body() body: any): Promise<string> {
+    const message = JSON.stringify(body);
+    console.log(message)
+    this.droneService.publish(topic, message);
+    return `Published message ${message} to topic ${topic}`;
   }
 
-  @EventPattern('some/topic')
-  handleTopicMessage(data: Record<string, unknown>) {
-    console.log('Received message on topic "some/topic":', data);
+  @Post('subscribe/:topic')
+  async subscribeToTopic(@Param('topic') topic: string): Promise<string> {
+    this.droneService.subscribe(topic); // Only one argument
+    return `Subscribed to topic ${topic}`;
   }
 
-  @MessagePattern({ cmd: 'another/topic' })
-  handleAnotherTopicMessage(data: Record<string, unknown>) {
-    console.log('Received message on topic "another/topic":', data);
-  }
-
-  @Get('latest/:topic')
-  getLatestMessage(@Param('topic') topic: string): { topic: string, message: string | null } {
-    const message = this.droneService.getLatestMessage(topic);
-    return { topic, message };
-  }
-
-
-  @Get('subscribe/:topic')
-  subscribe(@Param('topic') topic: string): Observable<any> {
-    return this.droneService.subscribe(topic);
-  }
-
-  @Sse('events/:topic')
-  events(@Param('topic') topic: string): Observable<any> {
-    return this.droneService.subscribe(topic);
+  @Get(':topic/latest')
+  getLatestMessage(@Param('topic') topic: string) {
+    const latestMessage = this.droneService.getLatestMessage(topic);
+    console.log("had", latestMessage)
+    if (latestMessage) {
+      return `Latest message on topic ${topic}: ${latestMessage}`;
+    } else {
+      return `No message received on topic ${topic}`;
+    }
   }
 }
