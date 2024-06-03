@@ -24,23 +24,4 @@ export class DroneController {
     console.log('Received message on topic "another/topic":', data);
   }
 
-  @MessagePattern('findAllDrone')
-  findAll() {
-    return this.droneService.findAll();
-  }
-
-  @MessagePattern('findOneDrone')
-  findOne(@Payload() id: number) {
-    return this.droneService.findOne(id);
-  }
-
-  @MessagePattern('updateDrone')
-  update(@Payload() updateDroneDto: UpdateDroneDto) {
-    return this.droneService.update(updateDroneDto.id, updateDroneDto);
-  }
-
-  @MessagePattern('removeDrone')
-  remove(@Payload() id: number) {
-    return this.droneService.remove(id);
-  }
 }

@@ -19,16 +19,20 @@ export class DroneService {
     this.client.connect();
   }
 
-
   subscribe(topic: string): Observable<any> {
     const mqttClient = (this.client as any).mqttClient;
     mqttClient.subscribe(topic);
-    return fromEvent(mqttClient, 'message').pipe(
-      filter(([topicReceived]) => topicReceived === topic),
-      map(([topicReceived, message]) => ({
-        topic: topicReceived,
-        message: message.toString(),
-      })),
+    return fromEvent<[string, Buffer]>(mqttClient, 'message').pipe(
+      filter(([receivedTopic]) => receivedTopic === topic),
+      map(([receivedTopic, message]) => {
+        if (!message) {
+          throw new Error('Received undefined message');
+        }
+        return {
+          topic: receivedTopic,
+          message: message.toString(),
+        };
+      }),
     );
   }
 
