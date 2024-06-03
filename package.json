@@ -33,7 +33,9 @@
     "dotenv": "^16.3.1",
     "mqtt": "^5.7.0",
     "reflect-metadata": "^0.1.13",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "typeorm": "^0.3.20",
+    "winston": "^3.13.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^9.0.0",
