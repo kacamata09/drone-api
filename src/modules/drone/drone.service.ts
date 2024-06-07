@@ -17,7 +17,7 @@ export class DroneService {
   private latestMessages: Map<string, string> = new Map();
 
   constructor() {
-    this.client = connect('mqtt://localhost:1883');
+    this.client = connect('mqtt://test.mosquitto.org:1883');
 
     this.client.on('connect', () => {
       console.log('Connected to MQTT broker');
@@ -28,20 +28,22 @@ export class DroneService {
     });
 
     this.client.on('message', (topic, message) => {
+      console.log(message, 'hhhhhh')
       this.latestMessages.set(topic, message.toString());
     });
   }
 
   publish(topic: string, message: string): void {
-    this.client.publish(topic, message);
+    this.client.publish("kirei/buoy/kamera", message);
   }
 
   subscribe(topic: string): void {
-    this.client.subscribe(topic);
+    this.client.subscribe("kirei/buoy/kamera");
+    console.log("sudah subscrib")
   }
 
   getLatestMessage(topic: string): string | undefined {
-    return this.latestMessages.get(topic);
+    return this.latestMessages.get('kirei/buoy/kamera');
   }
 
 }

@@ -11,29 +11,30 @@ export class DroneController {
 
   @Post('subscribe/:topic')
   @ApiOperation({ description: 'to subscribe topic to get message', summary: 'subscribe topic' })
-  async subscribeToTopic(@Param('topic') topic: string): Promise<string> {
-    this.droneService.subscribe(topic);
-    return `Subscribed to topic ${topic}`;
+  async subscribeToTopic(@Body() body: MessageDroneDto): Promise<string> {
+    this.droneService.subscribe(body.topic);
+    return `Subscribed to topic ${body.topic}`;
   }
   
-  @Post('publish/:topic')
+  @Post('publish')
   @ApiOperation({ description: 'to publish topic and message', summary: 'publish message to topic' })
-  async publishToTopic(@Param('topic') topic: string, @Body() body: MessageDroneDto): Promise<string> {
-    const message = JSON.stringify(body);
-    this.droneService.publish(topic, message);
-    return `Published message ${message} to topic ${topic}`;
+  async publishToTopic(@Body() body: MessageDroneDto): Promise<string> {
+    const message = JSON.stringify(body.message);
+    this.droneService.publish(body.topic, body.message);
+    return `Published message ${message} to topic ${body.topic}`;
   }
-
-  @Get(':topic/latest')
+  
+  @Get('latest')
   @ApiOperation({ description: 'to get latest message from topic in param', summary: 'get message' })
-  getLatestMessage(@Param('topic') topic: string) {
-    const latestMessage = this.droneService.getLatestMessage(topic);
+  getLatestMessage(@Body() body: MessageDroneDto) {
+    const latestMessage = this.droneService.getLatestMessage(body.topic);
     console.log("had", latestMessage)
     if (latestMessage) {
       // return `Latest message on topic ${topic}: ${latestMessage}`;
-      return latestMessage;
+      const message = JSON.stringify(latestMessage);
+      return message;
     } else {
-      return `No message received on topic ${topic}`;
+      return `No message received on topic ${body.topic}`;
     }
   }
 }
