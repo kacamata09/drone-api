@@ -9,7 +9,7 @@ import { ApiTags, ApiOperation } from '@nestjs/swagger';
 export class DroneController {
   constructor(private readonly droneService: DroneService) {}
 
-  @Post('subscribe/:topic')
+  @Post('subscribe')
   @ApiOperation({ description: 'to subscribe topic to get message', summary: 'subscribe topic' })
   async subscribeToTopic(@Body() body: MessageDroneDto): Promise<string> {
     this.droneService.subscribe(body.topic);
