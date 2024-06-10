@@ -34,16 +34,16 @@ export class DroneService {
   }
 
   publish(topic: string, message: string): void {
-    this.client.publish("kirei/buoy/kamera", message);
+    this.client.publish(topic, message);
   }
 
   subscribe(topic: string): void {
-    this.client.subscribe("kirei/buoy/kamera");
+    this.client.subscribe(topic);
     console.log("sudah subscrib")
   }
 
   getLatestMessage(topic: string): string | undefined {
-    return this.latestMessages.get('kirei/buoy/kamera');
+    return this.latestMessages.get(topic);
   }
 
 }
