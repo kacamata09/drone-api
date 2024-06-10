@@ -1,6 +1,7 @@
 import { MessagePattern, Payload, EventPattern } from '@nestjs/microservices';
 import { DroneService } from './drone.service';
 import { MessageDroneDto } from './dto/message-drone-dto.dto';
+import { TopicDroneDto } from './dto/topic-drone-dto.dto';
 import { Controller, Get, Param, Post, Body, Sse } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
@@ -11,7 +12,7 @@ export class DroneController {
 
   @Post('subscribe/:topic')
   @ApiOperation({ description: 'to subscribe topic to get message', summary: 'subscribe topic' })
-  async subscribeToTopic(@Body() body: MessageDroneDto): Promise<string> {
+  async subscribeToTopic(@Body() body: TopicDroneDto): Promise<string> {
     this.droneService.subscribe(body.topic);
     return `Subscribed to topic ${body.topic}`;
   }
@@ -20,19 +21,19 @@ export class DroneController {
   @ApiOperation({ description: 'to publish topic and message', summary: 'publish message to topic' })
   async publishToTopic(@Body() body: MessageDroneDto): Promise<string> {
     const message = JSON.stringify(body.message);
-    this.droneService.publish(body.topic, body.message);
+    this.droneService.publish(body.topic, message);
     return `Published message ${message} to topic ${body.topic}`;
   }
   
-  @Get('latest')
+  @Post('latest')
   @ApiOperation({ description: 'to get latest message from topic in param', summary: 'get message' })
-  getLatestMessage(@Body() body: MessageDroneDto) {
+  getLatestMessage(@Body() body: TopicDroneDto) {
     const latestMessage = this.droneService.getLatestMessage(body.topic);
     console.log("had", latestMessage)
     if (latestMessage) {
       // return `Latest message on topic ${topic}: ${latestMessage}`;
-      const message = JSON.stringify(latestMessage);
-      return message;
+      // const message = JSON.stringify(latestMessage);
+      return latestMessage;
     } else {
       return `No message received on topic ${body.topic}`;
     }
